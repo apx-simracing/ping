@@ -1,0 +1,51 @@
+<html>
+
+<head>
+  <title>APX Ping</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='lib/spectre.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='lib/spectre-exp.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='lib/spectre-icons.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+  <img class="backdrop" style="background-image: url({{ url_for('static', filename='backdrop.jpg') }})">
+
+  <form class="form">
+    <div class="logo-parent">
+      <img src="{{ url_for('static', filename='logo.png') }}">
+    </div>
+    <h1>
+      Port check
+    </h1>
+    <div class="toast toast-warning">
+      As of the nature of UDP ports, they result in a positive result even if not listening.
+      <br />
+      Results will be cached per given hostname by 60 seconds.
+    </div>
+    <br />
+    <div class="form-group">
+      {% for file,  value in results.items() %}
+      <tr>
+        <h2>{{ file }}.json</h2>
+        {% for key,  key_value in value.items() %}
+        <p>
+          {{ key_value.orig_name }}
+          <button class="btn badge disabled {{  "btn-success" if key_value.result else "btn-error" }}"
+            data-badge="{{ key_value.type }}">
+            {{ key_value.port }}
+            {% if key_value.result %}
+            <i class="icon icon-check"></i>
+            {% else %}
+            <i class="icon icon-cross"></i>
+            {% endif%}
+          </button>
+        </p>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </div>
+  </form>
+</body>
+
+</html>
